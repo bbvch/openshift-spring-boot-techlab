@@ -268,3 +268,6 @@ oc get pods -w
 2. https://github.com/appuio/techlab
 
 3. https://blog.codecentric.de/en/2016/03/deploy-spring-boot-applications-openshift/
+
+
+short url to this repository : https://goo.gl/cF0f4n
