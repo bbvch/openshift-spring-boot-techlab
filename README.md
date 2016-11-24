@@ -69,9 +69,20 @@ Wenn wir oc status ausführen bekommen wir eine Warnung wie folgt
 dc/springboot-sample-app has no readiness probe to verify pods are ready to accept traffic or ensure deployment is successful
 ```
 
-## Rediness Probe
+## Application Health
 
-Um eine rediness probe hinzuzufügen forken wir das Projekt von github.
+Für Openshift gibt es zwei verschiedene Tests die man einrichten kann.
+1. Testen ob ein Programm noch lebt und wenn nicht eine neue Version starten.
+  dieser Test wird verwendet wenn ein Programm bereits gestartet ist.
+2. Testen ob ein Programm bereit ist verwendet zu werden.
+ dieser Test wird verwendet wenn ein Programm deployt wird. Damit wird überprüft wann der Traffic auf die neue Version umgeleitet werden kann.
+
+Weitere Information dazu auch unter folgendem Link:
+https://docs.openshift.org/latest/dev_guide/application_health.html
+
+### Health in Spring Boot
+
+Um eine liveness oder rediness probe hinzuzufügen forken wir das Projekt von github.
 
 https://github.com/codecentric/springboot-sample-app.git
 
@@ -105,7 +116,75 @@ oc expose service <service name>
 
 jetzt können wir auf diesem Service /health aufrufen.
 
-Wir nutzen /health um damit einen rediness Check in Openshift zu definieren. Erst /health erfolgreich aufgerufen werden kann ist unser Service bereit für Traffic.
+siehe https://spring.io/guides/gs/spring-boot/ für mehr Details.
+
+### Liveness Probe
+
+Wir nutzen die /health URL um eine liveness Probe für unser Projekt einzurichten. Die liveness Probe wird von Openshift regelmäßig überprüft. Wenn dieser Test fehlschlägt dann startet Openshift das Projekt neu.
+
+```sh
+# erst den namen der deployment configuration ermitteln
+oc get deploymentconfig
+
+# dann diese deployment configuration ändern
+oc edit dc <deployment config name>
+```
+
+unter diesem Pfad 
+
+```xml
+spec:
+  [......]
+  template:
+    [......]
+    spec:
+        [......]
+        resources: {}
+```
+
+die liveness probe hinzufügen:
+
+```xml
+spec:
+  [......]
+  template:
+    [......]
+    spec:
+        [......]
+        resources: {}
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /health/
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+```
+
+Diese Änderung speichern und den Editor schliessen. Openshift merkt die Änderung sofort und startet ein neues Deployment (die Configuration geändert).
+
+Durch die liveness Probe können wir einen Pod löschen und Openshift wird sofort einen neuen starten. Openshift überprüft regelmäßig ob die gewünschte Anzahl Pods läuft. Wenn das nicht der Fall ist startet es mehr Pods.
+
+In einen Terminal Fenster können die Pods überwacht werden
+
+```sh
+oc get pods -w
+```
+
+In einem anderen Termain Fenster kann der aktuelle Pod gelöscht werden
+
+```sh
+oc get pods
+oc delete pod <pod name>
+```
+
+### Readiness Probe
+
+
+Wir nutzen die /health URL um damit einen rediness Check in Openshift zu definieren. Erst wenn /health erfolgreich aufgerufen werden kann ist unser Service bereit für Traffic.
 
 ```sh
 # erst den namen der deployment configuration ermitteln
@@ -145,26 +224,26 @@ spec:
           timeoutSeconds: 1
 ```
 
+Diese Änderung speichern und den Editor schliessen. Openshift merkt die Änderung sofort und startet ein neues Deployment (die Configuration geändert).
 
+Wenn man über das Terminal oder die Web Console den Service hochskaliert sieht man jetzt das erst der Docker Container verfügbar ist (hell blau) und dann die Application verfügbar ist (dunkleres blau).
 
+```sh
+# Information über die replicas
+oc get rc
 
+# skalieren auf 3
+oc scale --replicas=3 rc <rc name>
 
+# überprüfen
+oc get rc 
 
-
-
-
-
-
-
-
-
-siehe https://spring.io/guides/gs/spring-boot/ für mehr Details.
-
-
-
+# oder
+oc get pods -w
 ```
 
+# Quellen
 
- Ohne den Artikel wäre dieser Beitrag nicht möglich gewesen:
-
+https://docs.openshift.org/latest/welcome/index.html
+https://github.com/appuio/techlab
 https://blog.codecentric.de/en/2016/03/deploy-spring-boot-applications-openshift/
