@@ -48,6 +48,23 @@ $ oc new-project <name>
 # ein Beispiel Spring Boot Project anlegen.
 $ oc new-app codecentric/springboot-maven3-centos~https://github.com/codecentric/springboot-sample-app.git
 
+# den Status vom Deplyoment überwachen. Entweder in der Web Console oder mit dem Befehl
+oc status
+
+# wenn das Deployment abgeschlossen ist sollte ein neuer pod und ein service laufen
+oc get pods
+oc get services
+
+# wir überprüfen ob der Service bereits von Aussen sichtbar ist.
+oc get routes
+
+# dieser Serivce ist noch nicht von Aussen sichtbar der HOST/PORT ist leer. Um dies zu ändern erstellen wir eine Route
+oc expose service <service name>
+
+
+
+
+
 
 ```
 
