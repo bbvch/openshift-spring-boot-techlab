@@ -1,6 +1,6 @@
 # Openshift Origin Spring Boot Techlab
 
-# Openshift Client Tools 'oc' installieren.
+## Openshift Client Tools 'oc' installieren.
 Von der Webseite
  
  https://github.com/openshift/origin/releases/tag/v1.2.2
@@ -11,27 +11,23 @@ starte ein Terminal und überprüfe die Version
  
 ```sh
 $ oc version
-```
-erwartete Ausgabe ist
-
-```sh
 oc v1.2.2
 kubernetes v1.2.0-36-g4a3f9c5  
 ```
 
-# Bei Openshift anmelden
+## Bei Openshift anmelden
  
 Um Openshift zu bedienen kann entweder die Web Console verwendet werden oder die Client Tools 'oc' console.
 
 Das SLL Zertifikat ist self-sign daher muss es separat akzeptiert werden.
 
-## Web Console
+### Web Console
 
 Die Url für die Web Console ist 
 
 https://openshift-rg01-master.northeurope.cloudapp.azure.com:8443/console
 
-## Client Tool 'oc'
+### Client Tool 'oc'
 
 Mit dem folgenden Befehl anmelden.
 
@@ -39,7 +35,9 @@ Mit dem folgenden Befehl anmelden.
 $ oc login https://openshift-rg01-master.northeurope.cloudapp.azure.com:8443
 ```
 
-# Project erstellen
+## Projekt Setup
+
+Leider ist es nicht möglich direkt ein Spring Boot Projekt in Openshift zu deployen. 
 
 ```sh
 # ein neues Projekt erstellen.
@@ -58,11 +56,109 @@ oc get services
 # wir überprüfen ob der Service bereits von Aussen sichtbar ist.
 oc get routes
 
-# dieser Serivce ist noch nicht von Aussen sichtbar der HOST/PORT ist leer. Um dies zu ändern erstellen wir eine Route
+# dieser Serivce ist noch nicht von Aussen sichtbar es gibt keine Route. Um dies zu ändern erstellen wir eine.
 oc expose service <service name>
 
+```
+
+jetzt ist der Spring Boot Service von Aussen erreichbar.
+
+Wenn wir oc status ausführen bekommen wir eine Warnung wie folgt
+
+```sh
+dc/springboot-sample-app has no readiness probe to verify pods are ready to accept traffic or ensure deployment is successful
+```
+
+## Rediness Probe
+
+Um eine rediness probe hinzuzufügen forken wir das Projekt von github.
+
+https://github.com/codecentric/springboot-sample-app.git
+
+checken es lokal aus fügen dem pom.xml die folgende dependency hinzu
+
+```xml
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+```
+
+diese Änderung einchecken und pushen.
+
+Dann ein neues Projekt anlegen wie oben und euer eigenes Repository (eben forked) deployen
+
+```sh
+oc new-app codecentric/springboot-maven3-centos~https://github.com/<dein github user>/springboot-sample-app.git
+```
+
+auch diesen Build und Deployment kann man mit oc status oder über die Web Console überwachen.
+Wenn das Deplyoment erfolgreich wollen wir auch diesen Service nach Aussen sichtbar machen.
+
+```sh
+# erst den serivce namen ermitteln
+oc get services
+
+# dann den serivce nach Aussen sichtbar machen
+oc expose service <service name>
+```
+
+jetzt können wir auf diesem Service /health aufrufen.
+
+Wir nutzen /health um damit einen rediness Check in Openshift zu definieren. Erst /health erfolgreich aufgerufen werden kann ist unser Service bereit für Traffic.
+
+```sh
+# erst den namen der deployment configuration ermitteln
+oc get deploymentconfig
+
+# dann diese deployment configuration ändern
+oc edit dc <deployment config name>
+
+```
+unter diesem Pfad 
+```xml
+spec:
+  [......]
+  template:
+    [......]
+    spec:
+        [......]
+        resources: {}
+```
+
+die rediness probe hinzufügen:
+
+```xml
+spec:
+  [......]
+  template:
+    [......]
+    spec:
+        [......]
+        resources: {}
+        readinessProbe:
+          httpGet:
+            path: /health/
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 10
+          timeoutSeconds: 1
+```
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+siehe https://spring.io/guides/gs/spring-boot/ für mehr Details.
 
 
 
