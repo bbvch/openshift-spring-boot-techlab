@@ -1,6 +1,25 @@
 # Openshift Origin Spring Boot Techlab
 
-## Openshift Client Tools 'oc' installieren.
+Inhalt
+<ol>
+<li><a href="#openshift-client-tools-oc-installieren">Openshift Client Tools 'oc' installieren</a></li>
+<li><a href="#bei-openshift-anmelden">Bei Openshift anmelden</a>
+  <ol>
+  <li><a href="#web-console">Web Console</a></li>
+  <li><a href="#client-tool-oc">Client Tool 'oc'</a></li>
+  </ol>
+</li>
+<li><a href="#projekt-setup">Projekt Setup</a></li>
+<li><a href="#application-health">Application Health</a>
+  <ol>
+  <li><a href="#health-in-spring-boot">Health in Spring Boot</a></li>
+  <li><a href="#liveness-probe">Liveness Probe</a></li>
+  <li><a href="#readiness-probe">Readiness Probe</a></li>
+  </ol>
+</li>
+</ol>
+
+## Openshift Client Tools 'oc' installieren
 Von der Webseite
  
  https://github.com/openshift/origin/releases/tag/v1.2.2
@@ -244,6 +263,8 @@ oc get pods -w
 
 # Quellen
 
-https://docs.openshift.org/latest/welcome/index.html
-https://github.com/appuio/techlab
-https://blog.codecentric.de/en/2016/03/deploy-spring-boot-applications-openshift/
+1. https://docs.openshift.org/latest/welcome/index.html
+
+2. https://github.com/appuio/techlab
+
+3. https://blog.codecentric.de/en/2016/03/deploy-spring-boot-applications-openshift/
