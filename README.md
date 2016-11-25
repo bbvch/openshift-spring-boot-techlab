@@ -2,7 +2,7 @@
 
 Inhalt
 <ol>
-<li><a href="#openshift-client-tools-oc-installieren">Openshift Client Tools 'oc' installieren</a></li>
+<a href="#openshift-client-tools-oc-installieren">Openshift Client Tools 'oc' installieren</a></li>
 <li><a href="#bei-openshift-anmelden">Bei Openshift anmelden</a>
   <ol>
   <li><a href="#web-console">Web Console</a></li>
@@ -18,6 +18,43 @@ Inhalt
   </ol>
 </li>
 </ol>
+
+# Einleitung
+
+<img src="openshift-architecture-overview.png" />
+
+weitere Information 
+
+1. https://docs.openshift.org/latest/architecture/index.html
+
+2. https://github.com/appuio/techlab/blob/lab-3.2/labs/01_quicktour.md
+
+
+## Komponenten
+
+* Projects
+ In Openshift a project is a kubernetes namespace with additional attributes. With a projects other resources are grouped.
+ Openshift uses software defined network (SDN) to isolate projects from each other as much as possible.
+
+* Container and Images
+ Everything runs in a container. container are either build by source 2 image (S2I Build containers) or pulled from docker registry. Created container are pushed in a image registry to be later deployed and run. One container can consist of for example ubuntu + java + wildfly + application.
+
+* Pods and Services
+ A pod contains one or more container and is the unit managed (start, stop, restart, scale) by kubernetes at runtime.
+ Within a projects a set of pods (replicated set) can be identified by services. each searvices can be exposed to the outside of openshift with routes.
+
+## v2 <-> v3 Vergleich
+
+| Version 2        | Version 3               |
+|------------------|-------------------------|
+| Namespace/Domain | Project                 |
+| Gear             | Container               |
+| Cartridge        | Docker Image (Template) |
+| rhc              | oc                      |
+
+## Deployment in Azure
+
+<img src="azure-openshift-deployment-quickstart-template.png" />
 
 ## Openshift Client Tools 'oc' installieren
 Von der Webseite
