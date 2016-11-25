@@ -16,7 +16,13 @@ Inhalt
   <li><a href="#client-tool-oc">Client Tool 'oc'</a></li>
   </ol>
 </li>
-<li><a href="#projekt-setup">Projekt Setup</a></li>
+
+<li><a href="#uebungen">Übungen</a>
+<ol>
+<li><a href="#appuio-techlab">Appuio techlab</a></li>
+
+<li><a href="#spring-boot-techlab">Spring Boot techlab</a>
+<ol>
 <li><a href="#application-health">Application Health</a>
   <ol>
   <li><a href="#health-in-spring-boot">Health in Spring Boot</a></li>
@@ -25,6 +31,8 @@ Inhalt
   </ol>
 </li>
 </ol>
+</ol></li>
+</ol></li>
 
 # Einleitung
 
@@ -108,7 +116,15 @@ Mit dem folgenden Befehl anmelden.
 $ oc login https://openshift-rg01-master.northeurope.cloudapp.azure.com:8443
 ```
 
-## Projekt Setup
+# Übungen
+
+## Appuio techlab
+
+App Schritt 3 kann man dieses Techlab von AppUio.
+
+https://github.com/appuio/techlab
+
+## Spring Boot techlab
 
 Leider ist es nicht möglich direkt ein Spring Boot Projekt in Openshift zu deployen. Weil Openshift auf Docker Container setzt kann man jedoch jeden beliebigen Container deployen. Es gibt ein Container von codecentric der aus einem github Repository mit maven ein Spring Boot Projekt baut und die jar Datei dann in einen Container ablegt der dann auf Openshift laufen kann. Dieses Vorgehen schauen wir uns jetzt genauer an.
 
@@ -117,7 +133,7 @@ Leider ist es nicht möglich direkt ein Spring Boot Projekt in Openshift zu depl
 $ oc new-project <name>
 
 # ein Beispiel Spring Boot Project anlegen.
-$ oc new-app codecentric/springboot-maven3-centos~https://github.com/codecentric/springboot-sample-app.git
+$ oc new-app codecentric/springboot-maven3-centos~https://github.com/codecentric/springboot-sample-app.git --name <unique name>
 
 # den Status vom Deplyoment überwachen. Entweder in der Web Console oder mit dem Befehl
 oc status
@@ -173,7 +189,7 @@ diese Änderung einchecken und pushen.
 Dann ein neues Projekt anlegen wie oben und euer eigenes Repository (eben forked) deployen
 
 ```sh
-oc new-app codecentric/springboot-maven3-centos~https://github.com/<dein github user>/springboot-sample-app.git
+oc new-app codecentric/springboot-maven3-centos~https://github.com/<dein github user>/springboot-sample-app.git --name <unique name>
 ```
 
 auch diesen Build und Deployment kann man mit oc status oder über die Web Console überwachen.
