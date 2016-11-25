@@ -110,7 +110,7 @@ $ oc login https://openshift-rg01-master.northeurope.cloudapp.azure.com:8443
 
 ## Projekt Setup
 
-Leider ist es nicht möglich direkt ein Spring Boot Projekt in Openshift zu deployen. 
+Leider ist es nicht möglich direkt ein Spring Boot Projekt in Openshift zu deployen. Weil Openshift auf Docker Container setzt kann man jedoch jeden beliebigen Container deployen. Es gibt ein Container von codecentric der aus einem github Repository mit maven ein Spring Boot Projekt baut und die jar Datei dann in einen Container ablegt der dann auf Openshift laufen kann. Dieses Vorgehen schauen wir uns jetzt genauer an.
 
 ```sh
 # ein neues Projekt erstellen.
