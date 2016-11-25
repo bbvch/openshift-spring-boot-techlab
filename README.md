@@ -17,7 +17,7 @@ Inhalt
   </ol>
 </li>
 
-<li><a href="#uebungen">Übungen</a>
+<li><a href="#Übungen">Übungen</a>
 <ol>
 <li><a href="#appuio-techlab">Appuio techlab</a></li>
 
