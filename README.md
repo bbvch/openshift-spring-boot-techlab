@@ -65,6 +65,14 @@ weitere Information zur Architektur von Openshift
 
 <img src="azure-openshift-deployment-quickstart-template.png" />
 
+Für mehr Information über das Deployment 
+
+1. https://github.com/borehack/openshift-origin-on-azure-workshop#deployment-on-azure
+
+2. https://github.com/Azure/azure-quickstart-templates/tree/master/openshift-origin-rhel
+
+3. http://developers.redhat.com/blog/2016/10/11/four-creative-ways-to-create-an-openshiftkubernetes-dev-environment/
+
 ## Openshift Client Tools 'oc' installieren
 Von der Webseite
  
