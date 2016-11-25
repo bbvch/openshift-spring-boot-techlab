@@ -2,7 +2,14 @@
 
 Inhalt
 <ol>
-<a href="#openshift-client-tools-oc-installieren">Openshift Client Tools 'oc' installieren</a></li>
+<li><a href="#einleitung">Einleitung</a>
+<ol>
+<li><a href="#komponenten">Komponenten</a></li>
+<li><a href="#v2---v3-vergleich">V2 und v3 Vergleich</a></li>
+<li><a href="#deployment-in-azure">Deployment in Azure</a></li>
+</ol>
+</li>
+<li><a href="#openshift-client-tools-oc-installieren">Openshift Client Tools 'oc' installieren</a></li>
 <li><a href="#bei-openshift-anmelden">Bei Openshift anmelden</a>
   <ol>
   <li><a href="#web-console">Web Console</a></li>
