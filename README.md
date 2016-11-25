@@ -30,7 +30,9 @@ Inhalt
 
 <img src="openshift-architecture-overview.png" />
 
-weitere Information 
+Wir verwenden Openshift Origin. Weitere Varianten von Openshift sind Openshift container plattform, Openshift dedicated und Openshift online.
+
+weitere Information zur Architektur von Openshift
 
 1. https://docs.openshift.org/latest/architecture/index.html
 
